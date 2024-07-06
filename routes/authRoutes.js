@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./logs2.db');
+const db = new sqlite3.Database(process.env.SQLITE);
 
 const router = Router();
 router.get('/signup', (req, res) => {
@@ -60,10 +60,17 @@ router.post('/login', (req, res) => {
             res.cookie('user_cookie', req.body.email);
             req.session.user = req.body.email;
             return res.status(200).json({redirectTo: '/'});
+          } else {
+            return res.status(400).json({password: "You have entered an invalid username or password."})
           }
         });
       }
     })
+});
+
+router.get('/logout', (req, res) => {
+  req.session.user = undefined;
+  res.redirect('/');
 });
 
 function CreateUser(body, callback) {

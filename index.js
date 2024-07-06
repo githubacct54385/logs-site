@@ -2,11 +2,11 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./logs2.db');
+require('dotenv').config();
+const db = new sqlite3.Database(process.env.SQLITE);
 const authRoutes = require('./routes/authRoutes');
 const cookieParser = require('cookie-parser');
 const session = require("express-session");
-require('dotenv').config();
 
 app.set('view engine', 'ejs');// Parse JSON request bodies
 app.use(express.json());
