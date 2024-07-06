@@ -1,23 +1,23 @@
 const express = require('express');
 const app = express();
-const port = 5000;
+const port = 3000;
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('../holiday-tracker/holidays.db');
+const db = new sqlite3.Database('./logs.db');
 
-app.get('/', (req, res) => {
-  res.send('<h1>My Node app</h1>')
+app.set('view engine', 'ejs');
+
+app.get('/', function(req, res) {
+  res.render('pages/index');
 });
 
 app.get('/logs', (req, res) => {
-  db.run('select * from Log', (err, row) => {
-    if(err) {
-      console.log(err);
-    }
-    if(row) {
-      console.log(row);
-    }
-  })
-  res.send('<h1>Logs</h1>');
+  var logs = [];
+  db.all("SELECT id, createdAt, message FROM Log", (err, rows) => {
+    console.log(rows);
+    res.render('pages/logs', {
+      logs: rows
+    })
+  });
 });
 
 app.listen(port, () => {
