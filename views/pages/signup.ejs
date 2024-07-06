@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/header'); %>
+</header>
+
+<main>
+  <div class="jumbotron">
+    <h1>Sign up</h1>
+  </div>
+<form method="POST">
+  <div class="form-group">
+    <label for="exampleInputEmail1">Email address</label>
+    <input type="email" name="email" required class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+    <div id="email-feedback" class="invalid-feedback">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" name="password" required class="form-control" id="exampleInputPassword1" placeholder="Password" onkeypress="handle(event)">
+    <div id="password-feedback" class="invalid-feedback">
+    </div>
+  </div>
+  <button type="button" onclick="submitForm()" class="btn btn-primary">Submit</button>
+</form>
+</main>
+
+<footer>
+  <%- include('../partials/footer'); %>
+</footer>
+
+<script type="text/javascript">
+
+   async function handle(e){
+        if(e.keyCode === 13){
+            e.preventDefault();
+            await submitForm();
+        }
+    }
+
+    async function submitForm() {
+      document.getElementById('exampleInputPassword1').classList.remove("is-invalid");
+      document.getElementById('password-feedback').textContent = '';
+
+      document.getElementById('exampleInputEmail1').classList.remove("is-invalid");
+      document.getElementById('email-feedback').textContent = '';
+      
+      var email = document.getElementById('exampleInputEmail1').value;
+      var password = document.getElementById('exampleInputPassword1').value;
+
+      var res = await fetch('/signup', {
+        method: "POST",
+        body: JSON.stringify({email: email, password: password}),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+      var json = await res.json();
+      if(res.ok && "redirectTo" in json) {
+        window.location.replace(json.redirectTo);
+      }
+      if("email" in json) {
+        document.getElementById('exampleInputEmail1').classList.add("is-invalid");
+        document.getElementById('email-feedback').textContent = json.email;
+      }
+      if("password" in json) {
+        document.getElementById('exampleInputPassword1').classList.add("is-invalid");
+        document.getElementById('password-feedback').textContent = json.password;
+      }
+    }
+
+</script>
+
+</body>
+</html>
