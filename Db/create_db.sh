@@ -1,1 +1,1 @@
-sqlite3 -init initDb.sql newsqlite.db ""
+sqlite3 -init initDb.sql app.db ""

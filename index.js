@@ -6,6 +6,7 @@ const db = new sqlite3.Database(process.env.SQLITE);
 const authRoutes = require('./routes/authRoutes');
 const cookieParser = require('cookie-parser');
 const session = require("express-session");
+const { DateTime } = require('luxon');
 
 app.set('view engine', 'ejs');// Parse JSON request bodies
 app.use(express.json());
@@ -37,9 +38,18 @@ app.get('/', function(req, res) {
 
 app.get('/logs', isAuthenticated, (req, res) => {
   var logs = [];
-  db.all("SELECT id, createdAt, message FROM Log order by createdAt DESC LIMIT 100", (err, rows) => {
+  const utcOffsetString = process.env.UTC_OFFSET;
+  const utcOffset = parseInt(utcOffsetString);
+  db.all('select id, createdAt, message from Log order by createdAt DESC LIMIT 100', (err, rows) => {
+    var newRows = rows.map(row => {
+      row.createdAt = DateTime
+        .fromSQL(row.createdAt)
+        .plus({hours: utcOffset})
+        .toFormat('MM/dd/yyyy, hh:mm a')
+      return row; 
+    });
     res.render('pages/logs', {
-      logs: rows,
+      logs: newRows,
       isAuthenticated: !!req.session.user
     })
   });

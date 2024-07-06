@@ -79,12 +79,14 @@ function CreateUser(body, callback) {
   if(!body) {
     throw "body is undefined";
   }
+  console.log('creating user', body);
   bcrypt.hash(body.password, saltRounds, function(err, hash) {
       // Store hash in your password DB.
     db.run('INSERT INTO User (emailAddress, password) VALUES ($emailAddress, $password)', {
       $emailAddress: body.email,
       $password: hash
       }, (err, ret) => {
+        console.log('creating user 2', err, ret);
         callback();
       });
   });
