@@ -1,6 +1,5 @@
 const express = require('express');
 const app = express();
-const port = 3000;
 const sqlite3 = require('sqlite3').verbose();
 require('dotenv').config();
 const db = new sqlite3.Database(process.env.SQLITE);
@@ -48,6 +47,6 @@ app.get('/logs', isAuthenticated, (req, res) => {
 
 app.use(authRoutes);
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+app.listen(process.env.PORT, () => {
+  console.log(`Example app listening on port ${process.env.PORT}`)
 });
