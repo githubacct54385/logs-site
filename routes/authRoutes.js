@@ -10,7 +10,8 @@ const router = Router();
 router.get('/signup', (req, res) => {
   res.render('pages/signup', {
     emailError: '',
-    passwordError: ''
+    passwordError: '',
+    isAuthenticated: !!req.session.user
   });
 });
 
@@ -37,7 +38,9 @@ router.post('/signup', (req, res) => {
 });
 
 router.get('/login', (req, res) => {
-  res.render('pages/login');
+  res.render('pages/login', {
+    isAuthenticated: !!req.session.user
+  });
 });
 
 router.post('/login', (req, res) => {

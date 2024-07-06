@@ -31,14 +31,17 @@ const isAuthenticated = (req, res, next) => {
 };
 
 app.get('/', function(req, res) {
-  res.render('pages/index');
+  res.render('pages/index', {
+    isAuthenticated: !!req.session.user
+  });
 });
 
 app.get('/logs', isAuthenticated, (req, res) => {
   var logs = [];
   db.all("SELECT id, createdAt, message FROM Log order by createdAt DESC LIMIT 100", (err, rows) => {
     res.render('pages/logs', {
-      logs: rows
+      logs: rows,
+      isAuthenticated: !!req.session.user
     })
   });
 });
