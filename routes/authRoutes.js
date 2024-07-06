@@ -64,6 +64,8 @@ router.post('/login', (req, res) => {
             return res.status(400).json({password: "You have entered an invalid username or password."})
           }
         });
+      } else {
+        return res.status(400).json({email: "You have entered an invalid username or password."});
       }
     })
 });
