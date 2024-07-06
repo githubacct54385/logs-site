@@ -13,7 +13,6 @@ app.get('/', function(req, res) {
 app.get('/logs', (req, res) => {
   var logs = [];
   db.all("SELECT id, createdAt, message FROM Log", (err, rows) => {
-    console.log(rows);
     res.render('pages/logs', {
       logs: rows
     })

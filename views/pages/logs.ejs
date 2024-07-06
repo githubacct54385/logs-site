@@ -12,13 +12,22 @@
 <main>
   <div class="jumbotron">
     <h1>Logs</h1>
-    <ul>
+<table class="table">
+    <thead>
+      <tr>
+        <th>Time</th>
+        <th>Message</th>
+      </tr>
+    </thead>
+    <tbody>
       <% logs.forEach(function(log) { %>
-        <li>
-          <strong><%= log.message %></strong>
-        </li>
+      <tr>
+              <td><%= log.createdAt %></td>
+              <td><%= log.message %></td>
+      </tr>
       <% }); %>
-    </ul>
+    </tbody>
+  </table>
   </div>
 </main>
 
