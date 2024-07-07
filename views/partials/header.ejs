@@ -26,6 +26,16 @@
           <a class="nav-link" href="/logout">Log Out</a>
         </li>
       <% } %>
+      <% if (!isAuthenticated) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/forgotPassword">Forgot Password</a>
+        </li>
+      <% } %>
+      <% if (isAuthenticated) { %>
+        <li class="nav-item">
+          <a class="nav-link" href="/changePassword">Change Password</a>
+        </li>
+      <% } %>
       </div>
     </div>
   </div>
